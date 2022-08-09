@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AirportService {
+        Optional<Airport> findById(Long id);
 
-    List<Airport>findAll();
+        Optional<Airport> findByIataCode(String iataCode);
 
-    Optional<Airport> findById(Long id);
-
-    Optional<Airport> saveAirport(Long airportId, String name, City city, String country, String iataCode, String icaoCode);
+        Optional<Airport> findByIcaoCode(String icaoCode);
 }

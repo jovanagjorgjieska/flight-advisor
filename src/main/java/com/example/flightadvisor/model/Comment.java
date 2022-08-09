@@ -21,6 +21,8 @@ public class Comment {
 
     private LocalDate dateModified;
 
+    private String creator;
+
     public Comment(String description) {
         this.description = description;
         this.dateCreated = LocalDate.now();

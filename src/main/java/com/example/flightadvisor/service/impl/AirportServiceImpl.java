@@ -1,27 +1,33 @@
 package com.example.flightadvisor.service.impl;
 
 import com.example.flightadvisor.model.Airport;
-import com.example.flightadvisor.model.City;
+import com.example.flightadvisor.repository.AirportRepository;
 import com.example.flightadvisor.service.AirportService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AirportServiceImpl implements AirportService {
-    @Override
-    public List<Airport> findAll() {
-        return null;
+
+    private final AirportRepository airportRepository;
+
+    public AirportServiceImpl(AirportRepository airportRepository) {
+        this.airportRepository = airportRepository;
     }
 
     @Override
     public Optional<Airport> findById(Long id) {
-        return Optional.empty();
+        return this.airportRepository.findById(id);
     }
 
     @Override
-    public Optional<Airport> saveAirport(Long airportId, String name, City city, String country, String iataCode, String icaoCode) {
-        return Optional.empty();
+    public Optional<Airport> findByIataCode(String iataCode) {
+        return this.airportRepository.findByIataCode(iataCode);
+    }
+
+    @Override
+    public Optional<Airport> findByIcaoCode(String icaoCode) {
+        return this.airportRepository.findByIcaoCode(icaoCode);
     }
 }
