@@ -30,4 +30,14 @@ public class AirportServiceImpl implements AirportService {
     public Optional<Airport> findByIcaoCode(String icaoCode) {
         return this.airportRepository.findByIcaoCode(icaoCode);
     }
+
+    @Override
+    public Optional<Airport> findByCode(String code) {
+        if(code.length() == 3){
+            return this.airportRepository.findByIataCode(code);
+        }
+        else{
+            return this.airportRepository.findByIcaoCode(code);
+        }
+    }
 }

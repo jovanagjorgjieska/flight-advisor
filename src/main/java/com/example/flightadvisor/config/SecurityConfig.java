@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
-@Profile("stateful-auth")
+@Profile("basic-auth")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUsernamePasswordAuthenticationProvider customUsernamePasswordAuthenticationProvider;
@@ -26,8 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/airports").hasRole("ADMIN")
-                .antMatchers("/cities").hasRole("USER")
+//                .antMatchers("/airports/importData").hasRole("ADMIN")
+                .antMatchers("/cities/*").hasRole("USER")
                 .antMatchers("/register").permitAll();
     }
 

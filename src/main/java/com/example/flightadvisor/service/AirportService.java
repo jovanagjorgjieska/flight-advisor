@@ -13,4 +13,6 @@ public interface AirportService {
         Optional<Airport> findByIataCode(String iataCode);
 
         Optional<Airport> findByIcaoCode(String icaoCode);
+
+        Optional<Airport> findByCode(String code);
 }

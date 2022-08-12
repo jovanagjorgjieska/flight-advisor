@@ -9,11 +9,10 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/airports")
@@ -25,6 +24,7 @@ public class AirportController {
     private Job job;
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/importData")
     public void importAirportData(){
         JobParameters jobParameters = new JobParametersBuilder()
