@@ -24,8 +24,8 @@ public class AirportController {
     private Job job;
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/importData")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
     public void importAirportData(){
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("startAt", System.currentTimeMillis()).toJobParameters();

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface RouteService {
     Optional<Route> findById(String id);
-    void findCheapestFlight(City cityA, City cityB);
+    void findCheapestFlight(String cityA, String cityB);
     void dijkstra(int city);
     String tempVertexMinPL();
     boolean isAdjacent(int u, int v);

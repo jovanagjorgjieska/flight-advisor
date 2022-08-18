@@ -31,7 +31,7 @@ public class RouteServiceImpl implements RouteService {
     }
 
     private static final double INFINITY = 99999.9;
-    int n = 1000;
+    int n;
     Vertex[] vertexList = new Vertex[n];
     double [][] neighbours = new double[n][n];
 
@@ -41,7 +41,7 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public void findCheapestFlight(City cityA, City cityB) {
+    public void findCheapestFlight(String source, String destination) {
         List<City>cities = this.cityRepository.findAll();
         for(City c:cities){
             this.insertVertex(c.getName());
@@ -55,9 +55,6 @@ public class RouteServiceImpl implements RouteService {
             this.insertEdge(airport1.getCity(), airport2.getCity(), r.getPrice());
         }
 
-        String source = cityA.getName();
-        String destination = cityB.getName();
-
         int s = getIndex(source);
         int d = getIndex(destination);
 
@@ -67,14 +64,14 @@ public class RouteServiceImpl implements RouteService {
             System.out.println("There is no route from " + source + " to " + destination + "\n");
         } else{
             String p;
-            String [] path = new String[n];
+            String [] path = new String[1000];
             int totalPrice=0;
             int count=0;
 
             while(d != s)
             {
                 count++;
-                path[count] = cityB.getName();
+                path[count] = destination;
                 p = vertexList[d].getPredecessor();
                 int p_index = getIndex(p);
                 totalPrice += neighbours[p_index][d];
@@ -94,6 +91,7 @@ public class RouteServiceImpl implements RouteService {
     public void dijkstra(int city) {
         String current;
 
+        int n = this.cityRepository.findAll().size();
         for(int i=0; i<n; i++)
         {
             vertexList[i].setPermanent(false);
@@ -128,6 +126,7 @@ public class RouteServiceImpl implements RouteService {
     @Override
     public String tempVertexMinPL() {
         double min = INFINITY;
+        int n = this.cityRepository.findAll().size();
         String x = null;
         for(int i = 0; i < n; i++)
         {
@@ -148,6 +147,7 @@ public class RouteServiceImpl implements RouteService {
     @Override
     public int getIndex(String s)
     {
+        int n = this.cityRepository.findAll().size();
         for(int i=0; i<n; i++)
             if(s.equals(vertexList[i].getName()))
                 return i;

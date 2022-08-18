@@ -46,9 +46,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throw new UsernameNotFoundException("Invalid credentials");
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(creds.getUsername());
-        if(!passwordEncoder.matches(creds.getPassword(), userDetails.getPassword())){
-            throw new PasswordsDoNotMatchException();
-        }
+//        if(!passwordEncoder.matches(creds.getPassword(), userDetails.getPassword())){
+//            throw new PasswordsDoNotMatchException();
+//        }
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetails.getUsername(),creds.getPassword(),
                 userDetails.getAuthorities()));
     }
@@ -60,6 +60,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withSubject(new ObjectMapper().writeValueAsString(UserDetailsDto.of(userDetails)))
                 .withExpiresAt(new Date(System.currentTimeMillis()+EXPIRATION_TIME))
                 .sign(Algorithm.HMAC256(SECRET));
-        response.addHeader("Authorization", "Bearer "+token);
+//        response.addHeader("Authorization", "Bearer "+token);
+        response.setHeader("token", token);
     }
 }
