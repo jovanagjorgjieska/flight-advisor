@@ -23,8 +23,9 @@ public class Comment {
 
     private String creator;
 
-    public Comment(String description) {
+    public Comment(String description, String creator) {
         this.description = description;
+        this.creator = creator;
         this.dateCreated = LocalDate.now();
     }
 }

@@ -10,15 +10,13 @@ public interface CityService {
 
     List<City> findAll();
 
-    Optional<City> findById(Long cityId);
-
     Optional<City> findByName(String name);
 
     Optional<City> save(String name, String country, String description);
 
     Optional<City> addCommentForCity(Long cityId, Comment comment);
 
-    Optional<City> editCommentOfCity(Long cityId, Long commentId, Comment comment);
+    Optional<City> editCommentOfCity(Long cityId, Long commentId, Comment comment, String modifier);
 
-    Optional<City> deleteCommentOfCity(Long cityId, Long commentId);
+    Optional<City> deleteCommentOfCity(Long cityId, Long commentId, String username);
 }
