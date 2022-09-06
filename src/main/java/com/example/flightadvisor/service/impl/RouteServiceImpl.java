@@ -1,6 +1,7 @@
 package com.example.flightadvisor.service.impl;
 
 import com.example.flightadvisor.exceptions.AirportNotFoundException;
+import com.example.flightadvisor.exceptions.RouteNotFoundException;
 import com.example.flightadvisor.model.Airport;
 import com.example.flightadvisor.model.City;
 import com.example.flightadvisor.model.Route;
@@ -13,8 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.Stack;
 
 @Service
 public class RouteServiceImpl implements RouteService {
@@ -22,6 +22,7 @@ public class RouteServiceImpl implements RouteService {
     private final RouteRepository routeRepository;
     private final CityRepository cityRepository;
     private final AirportService airportService;
+    int n = 0;
 
 
     public RouteServiceImpl(RouteRepository routeRepository, CityRepository cityRepository, AirportService airportService) {
@@ -31,9 +32,9 @@ public class RouteServiceImpl implements RouteService {
     }
 
     private static final double INFINITY = 99999.9;
-    int n;
-    Vertex[] vertexList = new Vertex[n];
-    double [][] neighbours = new double[n][n];
+
+    Vertex[] vertexList = new Vertex[1000];
+    double [][] neighbours = new double[1000][1000];
 
     @Override
     public Optional<Route> findById(String id) {
@@ -41,7 +42,7 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public void findCheapestFlight(String source, String destination) {
+    public Route findCheapestFlight(String source, String destination) {
         List<City>cities = this.cityRepository.findAll();
         for(City c:cities){
             this.insertVertex(c.getName());
@@ -61,30 +62,52 @@ public class RouteServiceImpl implements RouteService {
         dijkstra(s);
 
         if(vertexList[d].getPathLength() == INFINITY){
-            System.out.println("There is no route from " + source + " to " + destination + "\n");
+            //System.out.println("There is no route from " + source + " to " + destination + "\n");
+            //ovde namesto ovaj print ke frli isklucok
+            throw new RouteNotFoundException();
         } else{
-            String p;
-            String [] path = new String[1000];
+            String pred;
+            String [] paths = new String[1000];
+            Stack<Route> path = new Stack<>();
             int totalPrice=0;
             int count=0;
 
             while(d != s)
             {
                 count++;
-                path[count] = destination;
-                p = vertexList[d].getPredecessor();
-                int p_index = getIndex(p);
+//                path[count] = destination;
+                pred = vertexList[d].getPredecessor();
+                Airport sourceAirport = this.airportService.findByCityName(pred).orElseThrow(AirportNotFoundException::new);
+                Airport destinationAirport = this.airportService.findByCityName(destination).orElseThrow(AirportNotFoundException::new);
+
+                String sourceCode = null;
+                String destinationCode = null;
+                if(sourceAirport.getIataCode() != null)
+                    sourceCode = sourceAirport.getIataCode();
+                else sourceCode = sourceAirport.getIcaoCode();
+
+                if(destinationAirport.getIataCode() != null)
+                    destinationCode = destinationAirport.getIataCode();
+                else destinationCode = destinationAirport.getIcaoCode();
+
+                Route route = this.routeRepository.findBySourceAirportCodeAndDestinationAirportCode(sourceCode, destinationCode)
+                                .orElseThrow(RouteNotFoundException::new);
+                path.push(route);
+                pred = vertexList[d].getPredecessor();
+                int p_index = getIndex(pred);
                 totalPrice += neighbours[p_index][d];
                 d = p_index;
             }
-            count++;
-            path[count]=source;
+//            count++;
+//            path[count]=source;
 
-            System.out.print("Shortest Path is : ");
+//            System.out.print("Shortest Path is : ");
             for(int i=count; i>=1; i--)
-                System.out.print(path[i] + " ");
-            System.out.println("\n Total price is : " + totalPrice + "\n");
+//                System.out.print(path[i] + " ");
+//            System.out.println("\n Total price is : " + totalPrice + "\n");
+                return path.pop();
         }
+        return null;
     }
 
     @Override

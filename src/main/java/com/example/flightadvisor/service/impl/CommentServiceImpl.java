@@ -5,6 +5,8 @@ import com.example.flightadvisor.model.Comment;
 import com.example.flightadvisor.repository.CityRepository;
 import com.example.flightadvisor.repository.CommentRepository;
 import com.example.flightadvisor.service.CommentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,10 +24,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Optional<Comment> editComment(Long commentId, String description) {
+    public Optional<Comment> editComment(Long commentId, String description, Long cityId) {
         Comment comment = this.commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
         comment.setDescription(description);
         comment.setDateModified(LocalDate.now());
+        comment.setCityId(cityId);
         this.commentRepository.save(comment);
         return Optional.of(comment);
     }

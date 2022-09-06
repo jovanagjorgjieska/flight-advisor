@@ -40,4 +40,9 @@ public class AirportServiceImpl implements AirportService {
             return this.airportRepository.findByIcaoCode(code);
         }
     }
+
+    @Override
+    public Optional<Airport> findByCityName(String name) {
+        return this.airportRepository.findByCity(name);
+    }
 }

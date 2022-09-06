@@ -46,4 +46,5 @@ public class Route {
         this.equipment = equipment;
         this.price = price;
     }
+
 }

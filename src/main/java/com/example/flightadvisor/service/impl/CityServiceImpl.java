@@ -9,6 +9,8 @@ import com.example.flightadvisor.repository.CityRepository;
 import com.example.flightadvisor.repository.CommentRepository;
 import com.example.flightadvisor.service.CityService;
 import com.example.flightadvisor.service.CommentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -36,8 +38,34 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    public List<City> findAllWithPagination(Pageable pageable) {
+        List<City> cities = this.cityRepository.findAll();
+
+        for(City c: cities){
+            List<Comment> comments = this.commentRepository.findAllByCityId(c.getCityId(), pageable).getContent();
+            c.setComments(comments);
+        }
+
+        return cities;
+    }
+
+    @Override
     public Optional<City> findByName(String name) {
-        return this.cityRepository.findByNameLike(name);
+        City city = this.cityRepository.findByNameLike(name).orElseThrow(() -> new CityNotFoundException(name));
+
+        List<Comment> comments = this.commentRepository.findAllByCityId(city.getCityId());
+        city.setComments(comments);
+        return Optional.of(city);
+    }
+
+    @Override
+    public Optional<City> findByNameWithPagination(String name, Pageable pageable) {
+        City city = this.cityRepository.findByNameLike(name).orElseThrow(() -> new CityNotFoundException(name));
+
+        List<Comment> comments = this.commentRepository.findAllByCityId(city.getCityId(), pageable).getContent();
+
+        city.setComments(comments);
+        return Optional.of(city);
     }
 
     @Override
@@ -52,7 +80,7 @@ public class CityServiceImpl implements CityService {
     public Optional<City> addCommentForCity(Long cityId, Comment comment) {
         City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
 
-        Comment commentToAdd = new Comment(comment.getDescription(), comment.getCreator());
+        Comment commentToAdd = new Comment(comment.getDescription(), comment.getCreator(), comment.getCityId());
         this.commentRepository.save(commentToAdd);
 
         city.getComments().add(commentToAdd);
@@ -65,7 +93,7 @@ public class CityServiceImpl implements CityService {
         Comment commentToEdit = this.commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
 
         if(modifier.equals(commentToEdit.getCreator())){
-            this.commentService.editComment(commentId, comment.getDescription());
+            this.commentService.editComment(commentId, comment.getDescription(), comment.getCityId());
             return Optional.of(city);
         } else
             throw new InvalidArgumentsException();

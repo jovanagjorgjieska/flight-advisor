@@ -23,9 +23,12 @@ public class Comment {
 
     private String creator;
 
-    public Comment(String description, String creator) {
+    private Long cityId;
+
+    public Comment(String description, String creator, Long cityId) {
         this.description = description;
         this.creator = creator;
+        this.cityId = cityId;
         this.dateCreated = LocalDate.now();
     }
 }

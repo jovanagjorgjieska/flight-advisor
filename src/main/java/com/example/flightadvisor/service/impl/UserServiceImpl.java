@@ -23,15 +23,6 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @Override
-//    public User login(String username, String password) {
-//        if(username == null || username.isEmpty() || password == null || password.isEmpty()){
-//            throw new InvalidArgumentsException();
-//        }
-//
-//        return userRepository.findByUsernameAndPassword(username, password).orElseThrow(InvalidUserCredentialsException::new);
-//    }
-//
     @Override
     public Optional<User> register(String username, String password, String firstName, String lastName) {
         if (username == null || username.isEmpty() || password == null || password.isEmpty())

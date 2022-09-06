@@ -8,4 +8,8 @@ public class AirportNotFoundException extends RuntimeException{
     public AirportNotFoundException(String code) {
         super(String.format("Airport with code: %s is not found", code));
     }
+
+    public AirportNotFoundException() {
+        super("Airport not found");
+    }
 }
