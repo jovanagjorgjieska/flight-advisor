@@ -1,7 +1,7 @@
 package com.example.flightadvisor.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,7 +22,8 @@ public class City {
 
     private String description;
 
-    @OneToMany
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
     private List<Comment> comments;
 
     public City(String name, String country, String description) {
@@ -31,4 +32,5 @@ public class City {
         this.description = description;
         this.comments = new ArrayList<>();
     }
+
 }

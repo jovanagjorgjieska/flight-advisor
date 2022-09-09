@@ -1,5 +1,6 @@
 package com.example.flightadvisor.web.controllers;
 
+import com.example.flightadvisor.exceptions.CityNotFoundException;
 import com.example.flightadvisor.model.City;
 import com.example.flightadvisor.model.Comment;
 import com.example.flightadvisor.service.CityService;
@@ -29,10 +30,8 @@ public class CommentsController {
     @PostMapping("/{cityId}")
     public ResponseEntity<City> addComment(@PathVariable Long cityId, @RequestBody Comment comment, Principal principal){
         String username = principal.getName();
-        comment.setCreator(username);
-        comment.setCityId(cityId);
 
-        return this.cityService.addCommentForCity(cityId, comment)
+        return this.cityService.addCommentForCity(cityId, comment, username)
                 .map(city -> ResponseEntity.ok().body(city))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }

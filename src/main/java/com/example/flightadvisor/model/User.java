@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,6 +25,9 @@ public class User implements UserDetails {
     private String firstName;
 
     private String lastName;
+
+    @OneToMany
+    private List<Comment> comments;
 
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;

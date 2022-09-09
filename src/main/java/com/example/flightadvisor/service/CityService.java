@@ -11,15 +11,17 @@ public interface CityService {
 
     List<City> findAll();
 
-    List<City> findAllWithPagination(Pageable pageable);
+    Optional<City> findById(Long cityId);
 
+//    List<City> findAllWithPagination(Pageable pageable);
+//
     Optional<City> findByName(String name);
-
-    Optional<City> findByNameWithPagination(String name, Pageable pageable);
+//
+//    Optional<City> findByNameWithPagination(String name, Pageable pageable);
 
     Optional<City> save(String name, String country, String description);
 
-    Optional<City> addCommentForCity(Long cityId, Comment comment);
+    Optional<City> addCommentForCity(Long cityId, Comment comment, String username);
 
     Optional<City> editCommentOfCity(Long cityId, Long commentId, Comment comment, String modifier);
 

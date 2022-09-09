@@ -1,10 +1,11 @@
 package com.example.flightadvisor.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -17,18 +18,22 @@ public class Comment {
 
     private String description;
 
-    private LocalDate dateCreated;
+    private LocalDateTime dateCreated;
 
-    private LocalDate dateModified;
+    private LocalDateTime dateModified;
 
-    private String creator;
+    @ManyToOne
+    private User creator;
 
-    private Long cityId;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "cityId", nullable = false)
+    private City city;
 
-    public Comment(String description, String creator, Long cityId) {
+    public Comment(String description, User creator, City city) {
         this.description = description;
         this.creator = creator;
-        this.cityId = cityId;
-        this.dateCreated = LocalDate.now();
+        this.city = city;
+        this.dateCreated = LocalDateTime.now();
     }
 }

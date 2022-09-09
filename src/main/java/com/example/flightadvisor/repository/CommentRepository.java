@@ -1,5 +1,6 @@
 package com.example.flightadvisor.repository;
 
+import com.example.flightadvisor.model.City;
 import com.example.flightadvisor.model.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findAllByCityId(Long cityId);
-    Page<Comment> findAllByCityId(Long cityId, Pageable pageable);
+    List<Comment> findAllByCity (City city);
+//    Page<Comment> findAllByCityId(Long cityId, Pageable pageable);
 }
