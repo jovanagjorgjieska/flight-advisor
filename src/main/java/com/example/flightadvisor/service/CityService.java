@@ -13,11 +13,11 @@ public interface CityService {
 
     Optional<City> findById(Long cityId);
 
-//    List<City> findAllWithPagination(Pageable pageable);
-//
+    List<City> findAllWithPagination(Pageable pageable);
+
     Optional<City> findByName(String name);
-//
-//    Optional<City> findByNameWithPagination(String name, Pageable pageable);
+
+    Optional<City> findByNameWithPagination(String name, Pageable pageable);
 
     Optional<City> save(String name, String country, String description);
 

@@ -15,6 +15,5 @@ public class AirportProcessor implements ItemProcessor<Airport,Airport> {
              return airport;
         else
             return null;
-//        return airport;
     }
 }

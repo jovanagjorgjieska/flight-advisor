@@ -1,18 +1,14 @@
 package com.example.flightadvisor.web.controllers;
 
-import com.example.flightadvisor.exceptions.CityNotFoundException;
 import com.example.flightadvisor.model.City;
 import com.example.flightadvisor.model.Comment;
 import com.example.flightadvisor.service.CityService;
 import com.example.flightadvisor.service.CommentService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/comments")

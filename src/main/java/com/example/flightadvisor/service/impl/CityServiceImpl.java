@@ -11,6 +11,8 @@ import com.example.flightadvisor.repository.CommentRepository;
 import com.example.flightadvisor.service.CityService;
 import com.example.flightadvisor.service.CommentService;
 import com.example.flightadvisor.service.UserService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -41,17 +43,17 @@ public class CityServiceImpl implements CityService {
         return this.cityRepository.findById(cityId);
     }
 
-//    @Override
-//    public List<City> findAllWithPagination(Pageable pageable) {
-//        List<City> cities = this.cityRepository.findAll();
-//
-//        for(City c: cities){
-//            List<Comment> comments = this.commentRepository.findAllByCityId(c.getCityId(), pageable).getContent();
-//            c.setComments(comments);
-//        }
-//
-//        return cities;
-//    }
+    @Override
+    public List<City> findAllWithPagination(Pageable pageable) {
+        List<City> cities = this.cityRepository.findAll();
+
+        for(City c: cities){
+            List<Comment> comments = this.commentRepository.findAllCommentsWithPagination(c, pageable).getContent();
+            c.setComments(comments);
+        }
+
+        return cities;
+    }
 
     @Override
     public Optional<City> findByName(String name) {
@@ -63,15 +65,15 @@ public class CityServiceImpl implements CityService {
         return Optional.of(city);
     }
 
-//    @Override
-//    public Optional<City> findByNameWithPagination(String name, Pageable pageable) {
-//        City city = this.cityRepository.findByNameLike(name).orElseThrow(() -> new CityNotFoundException(name));
-//
-//        List<Comment> comments = this.commentRepository.findAllByCityId(city.getCityId(), pageable).getContent();
-//
-//        city.setComments(comments);
-//        return Optional.of(city);
-//    }
+    @Override
+    public Optional<City> findByNameWithPagination(String name, Pageable pageable) {
+        City city = this.cityRepository.findByNameLike(name).orElseThrow(() -> new CityNotFoundException(name));
+
+        List<Comment> comments = this.commentRepository.findAllCommentsWithPagination(city, pageable).getContent();
+
+        city.setComments(comments);
+        return Optional.of(city);
+    }
 
     @Override
     public Optional<City> save(String name, String country, String description) {
