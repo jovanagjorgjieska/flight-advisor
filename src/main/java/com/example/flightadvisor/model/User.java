@@ -1,16 +1,15 @@
 package com.example.flightadvisor.model;
 
 import com.example.flightadvisor.model.enumerations.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Data
 @Entity
@@ -26,7 +25,8 @@ public class User implements UserDetails {
 
     private String lastName;
 
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
     private List<Comment> comments;
 
     private boolean isAccountNonExpired = true;
@@ -43,6 +43,7 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = Role.ROLE_USER;
+        this.comments = new ArrayList<>();
     }
 
     public User() {
@@ -51,7 +52,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(role);
-//        return Arrays.asList(role);
     }
 
     @Override

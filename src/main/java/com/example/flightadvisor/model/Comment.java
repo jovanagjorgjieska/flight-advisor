@@ -23,6 +23,7 @@ public class Comment {
     private LocalDateTime dateModified;
 
     @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
     private User creator;
 
     @JsonBackReference
