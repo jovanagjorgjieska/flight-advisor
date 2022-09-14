@@ -18,5 +18,6 @@ public class RouteProcessor implements ItemProcessor<Route,Route> {
             return route;
         }
         else return null;
+//        return route;
     }
 }

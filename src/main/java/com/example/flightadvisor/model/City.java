@@ -33,4 +33,11 @@ public class City {
         this.comments = new ArrayList<>();
     }
 
+    public City(String name, String country) {
+        this.name = name;
+        this.country = country;
+        this.description = null;
+        this.comments = new ArrayList<>();
+    }
+
 }
