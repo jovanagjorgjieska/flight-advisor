@@ -23,34 +23,34 @@ public class CommentsController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/{cityId}")
-    public ResponseEntity<City> addComment(@PathVariable Long cityId, @RequestBody Comment comment, Principal principal){
+    @PostMapping("/{cityName}")
+    public ResponseEntity<City> addComment(@PathVariable String cityName, @RequestBody Comment comment, Principal principal){
         String username = principal.getName();
 
-        return this.cityService.addCommentForCity(cityId, comment, username)
+        return this.cityService.addCommentForCity(cityName, comment, username)
                 .map(city -> ResponseEntity.ok().body(city))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @PreAuthorize("hasRole('USER')")
-    @PutMapping("/{cityId}/{commentId}")
-    public ResponseEntity<City> editComment(@PathVariable Long cityId,
+    @PutMapping("/{cityName}/{commentId}")
+    public ResponseEntity<City> editComment(@PathVariable String cityName,
                                             @PathVariable Long commentId,
                                             @RequestBody Comment comment,
                                             Principal principal){
         String username = principal.getName();
 
-        return this.cityService.editCommentOfCity(cityId, commentId, comment, username)
+        return this.cityService.editCommentOfCity(cityName, commentId, comment, username)
                 .map(city -> ResponseEntity.ok().body(city))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @PreAuthorize("hasRole('USER')")
-    @DeleteMapping("/{cityId}/{commentId}")
-    public ResponseEntity<City> deleteComment(@PathVariable Long cityId, @PathVariable Long commentId, Principal principal){
+    @DeleteMapping("/{cityName}/{commentId}")
+    public ResponseEntity<City> deleteComment(@PathVariable String cityName, @PathVariable Long commentId, Principal principal){
         String username = principal.getName();
 
-        return this.cityService.deleteCommentOfCity(cityId, commentId, username)
+        return this.cityService.deleteCommentOfCity(cityName, commentId, username)
                 .map(city -> ResponseEntity.ok().body(city))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }

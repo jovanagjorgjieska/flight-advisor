@@ -11,6 +11,8 @@ public class AirportProcessor implements ItemProcessor<Airport,Airport> {
 
     @Autowired
     private CityRepository cityRepository;
+    @Autowired
+    private CityService cityService;
     @Override
     public Airport process(Airport airport) throws Exception {
 //        if(this.cityService.findByName(airport.getCity()).isPresent())

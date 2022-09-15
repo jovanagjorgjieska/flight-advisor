@@ -38,10 +38,10 @@ public class CityServiceImpl implements CityService {
         return this.cityRepository.findAll();
     }
 
-    @Override
-    public Optional<City> findById(Long cityId) {
-        return this.cityRepository.findById(cityId);
-    }
+//    @Override
+//    public Optional<City> findById(Long cityId) {
+//        return this.cityRepository.findById(cityId);
+//    }
 
     @Override
     public List<City> findAllWithPagination(Pageable pageable) {
@@ -82,11 +82,48 @@ public class CityServiceImpl implements CityService {
         return Optional.of(city);
     }
 
+//    @Override
+//    @Transactional
+//    public Optional<City> addCommentForCity(Long cityId, Comment comment, String username) {
+//        User user = (User) this.userService.loadUserByUsername(username);
+//        City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+//
+//        Comment commentToAdd = new Comment(comment.getDescription(), user, city);
+//        this.commentRepository.save(commentToAdd);
+//
+//        return Optional.of(city);
+//    }
+//
+//    @Override
+//    public Optional<City> editCommentOfCity(Long cityId, Long commentId, Comment comment, String modifier) {
+//        City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+//        Comment commentToEdit = this.commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
+//        User user = (User) this.userService.loadUserByUsername(modifier);
+//
+//        if(user.equals(commentToEdit.getCreator())){
+//            this.commentService.editComment(commentId, comment.getDescription(), city);
+//            return Optional.of(city);
+//        } else
+//            throw new InvalidArgumentsException();
+//    }
+//
+//    @Override
+//    public Optional<City> deleteCommentOfCity(Long cityId, Long commentId, String username) {
+//        City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+//        Comment commentToDelete = this.commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
+//        User user = (User) this.userService.loadUserByUsername(username);
+//
+//        if(user.equals(commentToDelete.getCreator())){
+//            this.commentRepository.delete(commentToDelete);
+//            return Optional.of(city);
+//        }else
+//            throw new InvalidArgumentsException();
+//    }
     @Override
     @Transactional
-    public Optional<City> addCommentForCity(Long cityId, Comment comment, String username) {
+    public Optional<City> addCommentForCity(String cityName, Comment comment, String username) {
         User user = (User) this.userService.loadUserByUsername(username);
-        City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+        City city = this.cityRepository.findByName(cityName).orElseThrow(() -> new CityNotFoundException(cityName));
 
         Comment commentToAdd = new Comment(comment.getDescription(), user, city);
         this.commentRepository.save(commentToAdd);
@@ -95,8 +132,8 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public Optional<City> editCommentOfCity(Long cityId, Long commentId, Comment comment, String modifier) {
-        City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+    public Optional<City> editCommentOfCity(String cityName, Long commentId, Comment comment, String modifier) {
+        City city = this.cityRepository.findByName(cityName).orElseThrow(() -> new CityNotFoundException(cityName));
         Comment commentToEdit = this.commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
         User user = (User) this.userService.loadUserByUsername(modifier);
 
@@ -108,8 +145,8 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public Optional<City> deleteCommentOfCity(Long cityId, Long commentId, String username) {
-        City city = this.cityRepository.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
+    public Optional<City> deleteCommentOfCity(String cityName, Long commentId, String username) {
+        City city = this.cityRepository.findByName(cityName).orElseThrow(() -> new CityNotFoundException(cityName));
         Comment commentToDelete = this.commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
         User user = (User) this.userService.loadUserByUsername(username);
 
@@ -119,6 +156,5 @@ public class CityServiceImpl implements CityService {
         }else
             throw new InvalidArgumentsException();
     }
-
 
 }

@@ -12,10 +12,11 @@ import java.util.List;
 @Entity
 public class City {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cityId;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long cityId;
 
+    @Id
     private String name;
 
     private String country;

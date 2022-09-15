@@ -11,7 +11,7 @@ public interface CityService {
 
     List<City> findAll();
 
-    Optional<City> findById(Long cityId);
+//    Optional<City> findById(Long cityId);
 
     List<City> findAllWithPagination(Pageable pageable);
 
@@ -21,9 +21,15 @@ public interface CityService {
 
     Optional<City> save(String name, String country, String description);
 
-    Optional<City> addCommentForCity(Long cityId, Comment comment, String username);
+//    Optional<City> addCommentForCity(Long cityId, Comment comment, String username);
+//
+//    Optional<City> editCommentOfCity(Long cityId, Long commentId, Comment comment, String modifier);
+//
+//    Optional<City> deleteCommentOfCity(Long cityId, Long commentId, String username);
 
-    Optional<City> editCommentOfCity(Long cityId, Long commentId, Comment comment, String modifier);
+    Optional<City> addCommentForCity(String cityName, Comment comment, String username);
 
-    Optional<City> deleteCommentOfCity(Long cityId, Long commentId, String username);
+    Optional<City> editCommentOfCity(String cityName, Long commentId, Comment comment, String modifier);
+
+    Optional<City> deleteCommentOfCity(String cityName, Long commentId, String username);
 }
